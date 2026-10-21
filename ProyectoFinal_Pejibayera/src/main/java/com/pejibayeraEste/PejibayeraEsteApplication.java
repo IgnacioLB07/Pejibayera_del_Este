@@ -1,13 +1,13 @@
-package com.example;
+package com.pejibayeraEste;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DemoApplication {
+public class PejibayeraEsteApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
+		SpringApplication.run(PejibayeraEsteApplication.class, args);
 	}
 
 }

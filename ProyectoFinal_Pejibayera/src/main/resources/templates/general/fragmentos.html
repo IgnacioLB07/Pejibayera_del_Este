@@ -1,0 +1,43 @@
+
+<!-- Fragmento #1 que irá en el head de todas las páginas, así se incluye todo lo necesario de configuración-->
+<head>
+    <title>Pejibayera Del Este</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/fav/favicon-16x16.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/fav/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="192x192" th:href="@{/fav/android-chrome-192x192.png}">
+    <link rel="icon" type="image/png" sizes="512x512" h:href="@{/fav/android-chrome-512x512.png}">
+    
+    <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>  
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <script th:src="@{/js/rutinas.js}"></script> 
+</head>
+
+
+<!-- Fragmento #2  define el encabezado de las páginas, en concreto el menú y enlaces rápidos -->
+<header th:fragment="header" class="header">
+    <nav class="navbar">
+        <div class="logo">
+            <h1>Pejibayera del Este</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="/">Inicio</a></li>
+            <li><a href="/shop">Tienda</a></li>
+            <li><a href="/about">Nuestra Historia</a></li>
+            <li><a href="/cart">Carrito</a></li>
+        </ul>
+    </nav>
+</header>
+
+<!-- Fragmento #3  define el footer de las páginas, aparte de esto se podria incluir enlaces a redes socilaes y demás -->
+<footer th:fragment="footer" class="p-2 mt-5 bg-info text-white d-print-none">
+    <div class="footer-content">
+        <p>&copy; 2026 Pejibayera La Estación. Todos los derechos reservados.</p>
+        <p>Especialistas en pejibayes frescos, cocinados y preparados con amor.</p>
+    </div>
+</footer>

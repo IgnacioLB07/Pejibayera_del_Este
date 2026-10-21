@@ -1,0 +1,32 @@
+<!-- 1 Fragmento con titulo de la pagina -->
+<!-- Hero Section -->
+<section th:fragment="hero" class="hero">
+    <h2>Los mejores Pejibayes frescos y listos para disfrutar</h2>
+    <p>Conoce nuestra tienda digital, realiza tus pedidos y paga en línea de forma rápida.</p>
+    <a href="#products" class="btn-primary">Ver Productos</a>
+</section>
+
+<!-- 2 Fragmento con grid mockup -->
+<section th:fragment="products" id="products" class="products-section">
+    <h3>Nuestros Productos Destacados</h3>
+    <div class="product-grid">
+        <div class="product-card">
+            <div class="img-placeholder">Imagen Pejibaye</div>
+            <h4>Kilo de Pejibaye Cocinado</h4>
+            <p class="price">₡2,500</p>
+            <button class="btn-secondary" disabled>Agregar al Pedido</button>
+        </div>
+        <div class="product-card">
+            <div class="img-placeholder">Imagen Pejibaye</div>
+            <h4>Pejibayes con Mayonesa (Preparado)</h4>
+            <p class="price">₡1,800</p>
+            <button class="btn-secondary" disabled>Agregar al Pedido</button>
+        </div>
+        <div class="product-card">
+            <div class="img-placeholder">Imagen Pejibaye</div>
+            <h4>Miel de Pejibaye Artesanal</h4>
+            <p class="price">₡3,500</p>
+            <button class="btn-secondary" disabled>Agregar al Pedido</button>
+        </div>
+    </div>
+</section>
