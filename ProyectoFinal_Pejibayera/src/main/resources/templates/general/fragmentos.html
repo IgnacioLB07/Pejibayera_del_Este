@@ -1,4 +1,3 @@
-
 <!-- Fragmento #1 que irá en el head de todas las páginas, así se incluye todo lo necesario de configuración-->
 <head>
     <title>Pejibayera Del Este</title>
@@ -11,6 +10,7 @@
     <link rel="icon" type="image/png" sizes="512x512" h:href="@{/fav/android-chrome-512x512.png}">
 
     <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
 
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>  
@@ -18,29 +18,53 @@
     <script th:src="@{/js/rutinas.js}"></script> 
 </head>
 
-<!-- Fragmento #2  define el encabezado de las páginas, en concreto el menú y enlaces rápidos -->
 <header th:fragment="header" class="header">
-    <nav class="navbar navbar-expand-sm py-5" style="background-color: #d35400;" data-bs-theme="light">
-        <div class="container">                    
-            <a th:href="@{/}" class="navbar-brand fw-bold text-white fs-3">[[#{aplicacion.titulo}]]</a>
+    <nav class="navbar navbar-expand-lg bg-white sticky-top shadow-sm py-3 header-section">
+        <div class="container">
+
+            <!-- Título y Logotipo a la izquierda con redirección a / -->
+            <a th:href="@{/}" class="navbar-brand d-flex align-items-center fw-bold fs-4 text-decoration-none brand-title">
+                <!-- Opcional: Icono o Logo de Pejibaye -->
+                [[#{aplicacion.titulo}]]
+            </a>
+
             <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarCollapse">
-                <ul class="navbar-nav">
-                    <li class="nav-item px-3"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/info/listado}">[[#{plantilla.nosotros}]]</a></li>                              
-                    <li class="nav-item px-3"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/catalogo/listado}">[[#{plantilla.catalogo}]]</a></li>
+            
+            <div class="collapse navbar-collapse justify-content-between" id="navbarContent">
 
+                <!-- Subtítulos rápidos en el centro -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 align-items-center">
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-dark fw-semibold fs-5 custom-nav-link" th:href="@{/info/listado}">[[#{plantilla.nosotros}]]</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link text-dark fw-semibold fs-5 custom-nav-link" th:href="@{/catalogo/listado}">[[#{plantilla.catalogo}]]</a>
+                    </li>
 
-                    <li class="nav-item px-3" sec:authorize="isAuthenticated()"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/carrito/listado}">[[#{plantilla.carrito}]]</a></li>                              
-                    <li class="nav-item px-3" sec:authorize="isAuthenticated()"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/perfil/listado}">[[#{plantilla.perfil}]]</a></li>                              
+                    <!-- Validación si el usuario está autenticado para Carrito -->
+                    <li class="nav-item px-2" sec:authorize="isAuthenticated()">
+                        <a class="nav-link text-dark fw-semibold fs-5 custom-nav-link" th:href="@{/carrito/listado}">
+                            [[#{plantilla.carrito}]]
+                        </a>
+                    </li>  
+                    
+                    <!-- Validación si el usuario está autenticado para Perfil -->
+                    <li class="nav-item px-2" sec:authorize="isAuthenticated()">
+                        <a class="nav-link text-dark fw-semibold fs-5 custom-nav-link" th:href="@{/perfil/listado}">
+                            [[#{plantilla.perfil}]]
+                        </a>
+                    </li>
                 </ul>
 
-                <ul class="navbar-nav aling-items-center">
+                <!-- Subtítulo de Idioma a la derecha (Dropdown) -->
+                <ul class="navbar-nav align-items-center">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-white fw-semibold fs-5" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                            [[#{plantilla.idioma}]]</a>
-                        <ul class="dropdown-menu fs-5">
+                        <a class="nav-link dropdown-toggle text-dark fw-semibold fs-5 custom-nav-link" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                            [[#{plantilla.idioma}]]
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end fs-5 shadow-sm border-0">
                             <li><a class="dropdown-item" th:href="@{/(lang=es)}">Español</a></li>
                             <li><a class="dropdown-item" th:href="@{/(lang=en)}">English</a></li>
                             <li><a class="dropdown-item" th:href="@{/(lang=fr)}">Française</a></li>
@@ -49,16 +73,72 @@
                         </ul>
                     </li>
                 </ul>
-                <div id="resultBlock">
-                </div> 
+                <div id="resultBlock"></div>
             </div>
         </div>
     </nav>
 </header>
 
-<!-- Fragmento #3  define el footer de las páginas, aparte de esto se podria incluir enlaces a redes socilaes y demás -->
-<footer th:fragment="footer" class="py-4 mt-5 text-white d-print-none d-flex align-items-center justify-content-center" style="background-color: #B87612;">
-    <div class='container text-center'>
-        <p class="lead mb-0 fs-4">[[#{plantilla.derechos}]] &COPY;</p>
+<footer th:fragment="footer" class="text-white py-5 mt-auto d-print-none footer-section" style="background-color: #B87612;">
+    <div class="container footer-main">
+        <div class="row gy-4">
+
+            <!-- Columna 1: Título y derechos -->
+            <div class="col-12 col-md-3">
+                <div class="d-flex align-items-center mb-2">
+                    <h5 class="fw-bold mb-0">Pejibayera del Este</h5>
+                </div>
+                <p class="small mb-0 text-white-50">[[#{plantilla.derechos}]] &COPY; 2026</p>
+            </div>
+
+            <!-- Columna 2: Redes Sociales -->
+            <div class="col-12 col-md-3">
+                <h6 class="fw-bold mb-3 text-uppercase tracking-wider">[[#{footer.redes.sociales}]]</h6>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                            <span class="me-2"><i class="fa-brands fa-whatsapp"></i></span>
+                            @pejibayeraEste_CR
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                            <span class="me-2"><i class="fa-brands fa-square-facebook"></i></span>
+                            @pejibayeraEste_CR
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                            <span class="me-2"><i class="fa-brands fa-instagram"></i></span>
+                            @pejibayeraEste_CR
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Columna 3: Contacto -->
+            <div class="col-12 col-md-3">
+                <h6 class="fw-bold mb-3 text-uppercase tracking-wider">[[#{footer.contacto}]]</h6>
+                <ul class="list-unstyled mb-0 text-white-50">
+                    <li class="mb-2 text-white"><i class="fa-solid fa-phone me-2"></i> 8888-4444</li>
+                    <li class="mb-2 text-white"><i class="fa-solid fa-envelope me-2"></i> pejibayeraEste@correo.com</li>
+                    <li class="text-white"><i class="fa-solid fa-location-dot me-2"></i> Costa Rica, Cartago</li>
+                </ul>
+            </div>
+
+            <!-- Columna 4: Atención al Cliente -->
+            <div class="col-12 col-md-3">
+                <h6 class="fw-bold mb-3 text-uppercase tracking-wider">[[#{footer.atencion.cliente}]]</h6>
+                <ul class="list-unstyled mb-0">
+                    <li class="mb-2">
+                        <a href="#" class="text-white text-decoration-none hover-underline">[[#{footer.preguntas.frecuentes}]]</a>
+                    </li>
+                    <li>
+                        <a href="#" class="text-white text-decoration-none hover-underline">[[#{footer.puntos.entrega}]]</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
     </div>
 </footer>

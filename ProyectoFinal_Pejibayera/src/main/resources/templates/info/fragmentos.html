@@ -1,30 +1,39 @@
 <!--fragmento 1 para informacion general-->
-<section th:fragment="info" class="info">
-    <div class="info">
-        <div class="proposito">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Proposito</h5>
-                    <p class="card-text">[[#{texto.proposito}]]</p>
+<section th:fragment="info" class="info-section py-4">
+    <div class="container info-container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                
+                <!-- Tarjeta Propósito -->
+                <div class="proposito">
+                    <div class="card card-info shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold info-title">[[#{info.proposito}]]</h5>
+                            <p class="card-text mb-0">[[#{texto.proposito}]]</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="mision">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Misión</h5>
-                    <p class="card-text">[[#{texto.mision}]]</p>
+                <!-- Tarjeta Misión -->
+                <div class="mision">
+                    <div class="card card-info shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold info-title">[[#{info.mision}]]</h5>
+                            <p class="card-text mb-0">[[#{texto.mision}]]</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="vision">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Visión</h5>
-                    <p class="card-text">[[#{texto.vision}]]</p>
+                <!-- Tarjeta Visión -->
+                <div class="vision">
+                    <div class="card card-info shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title fw-bold info-title">[[#{info.vision}]]</h5>
+                            <p class="card-text mb-0">[[#{texto.vision}]]</p>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>
