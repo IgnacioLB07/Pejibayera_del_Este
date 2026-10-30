@@ -4,40 +4,61 @@
     <title>Pejibayera Del Este</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <link rel="icon" type="image/png" sizes="16x16" th:href="@{/fav/favicon-16x16.png}">
     <link rel="icon" type="image/png" sizes="32x32" th:href="@{/fav/favicon-32x32.png}">
     <link rel="icon" type="image/png" sizes="192x192" th:href="@{/fav/android-chrome-192x192.png}">
     <link rel="icon" type="image/png" sizes="512x512" h:href="@{/fav/android-chrome-512x512.png}">
-    
+
     <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    
+
     <script th:src="@{/webjars/jquery/jquery.min.js}"></script>  
     <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
     <script th:src="@{/js/rutinas.js}"></script> 
 </head>
 
-
 <!-- Fragmento #2  define el encabezado de las páginas, en concreto el menú y enlaces rápidos -->
 <header th:fragment="header" class="header">
-    <nav class="navbar">
-        <div class="logo">
-            <h1>Pejibayera del Este</h1>
+    <nav class="navbar navbar-expand-sm py-5" style="background-color: #d35400;" data-bs-theme="light">
+        <div class="container">                    
+            <a th:href="@{/}" class="navbar-brand fw-bold text-white fs-3">[[#{aplicacion.titulo}]]</a>
+            <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between align-items-center" id="navbarCollapse">
+                <ul class="navbar-nav">
+                    <li class="nav-item px-3"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/info/listado}">[[#{plantilla.nosotros}]]</a></li>                              
+                    <li class="nav-item px-3"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/catalogo/listado}">[[#{plantilla.catalogo}]]</a></li>
+
+
+                    <li class="nav-item px-3" sec:authorize="isAuthenticated()"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/carrito/listado}">[[#{plantilla.carrito}]]</a></li>                              
+                    <li class="nav-item px-3" sec:authorize="isAuthenticated()"><a class="nav-link text-white fw-semibold fs-5" th:href="@{/perfil/listado}">[[#{plantilla.perfil}]]</a></li>                              
+                </ul>
+
+                <ul class="navbar-nav aling-items-center">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-white fw-semibold fs-5" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">
+                            [[#{plantilla.idioma}]]</a>
+                        <ul class="dropdown-menu fs-5">
+                            <li><a class="dropdown-item" th:href="@{/(lang=es)}">Español</a></li>
+                            <li><a class="dropdown-item" th:href="@{/(lang=en)}">English</a></li>
+                            <li><a class="dropdown-item" th:href="@{/(lang=fr)}">Française</a></li>
+                            <li><a class="dropdown-item" th:href="@{/(lang=pt)}">Portugaise</a></li>
+                            <li><a class="dropdown-item" th:href="@{/(lang=it)}">Italiano</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <div id="resultBlock">
+                </div> 
+            </div>
         </div>
-        <ul class="nav-links">
-            <li><a href="/">Inicio</a></li>
-            <li><a href="/shop">Tienda</a></li>
-            <li><a href="/about">Nuestra Historia</a></li>
-            <li><a href="/cart">Carrito</a></li>
-        </ul>
     </nav>
 </header>
 
 <!-- Fragmento #3  define el footer de las páginas, aparte de esto se podria incluir enlaces a redes socilaes y demás -->
-<footer th:fragment="footer" class="p-2 mt-5 bg-info text-white d-print-none">
-    <div class="footer-content">
-        <p>&copy; 2026 Pejibayera La Estación. Todos los derechos reservados.</p>
-        <p>Especialistas en pejibayes frescos, cocinados y preparados con amor.</p>
+<footer th:fragment="footer" class="py-4 mt-5 text-white d-print-none d-flex align-items-center justify-content-center" style="background-color: #B87612;">
+    <div class='container text-center'>
+        <p class="lead mb-0 fs-4">[[#{plantilla.derechos}]] &COPY;</p>
     </div>
 </footer>

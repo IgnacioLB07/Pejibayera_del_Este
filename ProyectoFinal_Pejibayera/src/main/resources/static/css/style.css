@@ -1,143 +1,212 @@
-/* Basic Reset & Typography */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* ============================================
+   Pejibayera del Este — overrides de Bootstrap 5.3
+   Cargar SIEMPRE después de bootstrap.min.css
+   ============================================ */
+
+/* ---------- 1. Tokens de marca ---------- */
+:root {
+  --bs-primary: #B89E12;
+  --bs-primary-rgb: 184, 158, 18;
+  --bs-secondary: #B87612;
+  --bs-secondary-rgb: 184, 118, 18;
+
+  --brand: #B89E12;
+  --brand-dark: #B87612;
+  --brand-rgb: 184, 158, 18;
+
+  /* Radios unificados: todo el sistema usa el mismo valor */
+  --bs-border-radius: 0.5rem;
+  --bs-border-radius-sm: 0.5rem;
+  --bs-border-radius-lg: 0.5rem;
+  --bs-border-radius-xl: 0.75rem;
+  --bs-border-radius-pill: 50rem;
+
+  --bs-focus-ring-color: rgba(184, 158, 18, 0.25);
+  --bs-body-bg: #f9f6f0;
+  --bs-body-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ---------- 2. Base ---------- */
 body {
-    background-color: #f9f6f0;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+  background-color: var(--bs-body-bg);
+  color: #333;
+  font-family: var(--bs-body-font-family);
 }
 
-main {
-    flex: 1;
-}
+/* Sticky footer solo donde lo pidas con clases en el HTML:
+   <body class="d-flex flex-column min-vh-100">
+   <main class="flex-grow-1"> */
 
-/* Header & Navigation */
-.navbar {
-    background-color: #d35400; /* Warm earthy tone fitting for Pejibaye */
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-}
-
-.nav-links {
-    list-style: none;
-    display: flex;
-    gap: 1.5rem;
-}
-
-.nav-links a {
-    color: white;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.nav-links a:hover {
-    text-decoration: underline;
-}
-
-/* Hero Section */
-.hero {
-    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('../images/hero-bg.jpg') center/cover;
-    color: white;
-    text-align: center;
-    padding: 5rem 2rem;
-}
-
-.hero h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+/* ---------- 3. Botones ---------- */
+.btn {
+  --bs-btn-border-radius: var(--bs-border-radius);
+  border-radius: var(--bs-border-radius);
+  font-weight: 600;
+  padding: 0.6rem 1.25rem;
 }
 
 .btn-primary {
-    background-color: #e67e22;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-/* Products Section */
-.products-section {
-    padding: 3rem 2rem;
-    text-align: center;
-}
-
-.products-section h3 {
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: #b94b00;
-}
-
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.product-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-.img-placeholder {
-    width: 100%;
-    height: 150px;
-    background-color: #e0d5c1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #665;
-    margin-bottom: 1rem;
-    border-radius: 4px;
-    font-style: italic;
-}
-
-.price {
-    color: #27ae60;
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin: 0.5rem 0 1rem 0;
+  --bs-btn-bg: #B89E12;
+  --bs-btn-border-color: #B89E12;
+  --bs-btn-hover-bg: #a08a10;
+  --bs-btn-hover-border-color: #a08a10;
+  --bs-btn-active-bg: #8f7b0e;
+  --bs-btn-active-border-color: #8f7b0e;
+  --bs-btn-disabled-bg: #B89E12;
+  --bs-btn-disabled-border-color: #B89E12;
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-focus-shadow-rgb: 184, 158, 18;
 }
 
 .btn-secondary {
-    background-color: #bdc3c7;
-    color: #7f8c8d;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    cursor: not-allowed;
+  --bs-btn-bg: #B87612;
+  --bs-btn-border-color: #B87612;
+  --bs-btn-hover-bg: #a06610;
+  --bs-btn-hover-border-color: #a06610;
+  --bs-btn-active-bg: #8a5a0e;
+  --bs-btn-active-border-color: #8a5a0e;
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-focus-shadow-rgb: 184, 118, 18;
 }
 
-/* Footer */
-footer {
-    background-color: #2c3e50;
-    color: white;
-    text-align: center;
-    padding: 1.5rem;
-    margin-top: auto;
+.btn-outline-primary {
+  --bs-btn-color: #B89E12;
+  --bs-btn-border-color: #B89E12;
+  --bs-btn-hover-bg: #B89E12;
+  --bs-btn-hover-border-color: #B89E12;
+  --bs-btn-active-bg: #B89E12;
+  --bs-btn-active-border-color: #B89E12;
+  --bs-btn-focus-shadow-rgb: 184, 158, 18;
 }
 
-footer p {
-    font-size: 0.9rem;
-    margin: 0.25rem 0;
+/* ---------- 4. Formularios ---------- */
+.form-label {
+  font-weight: 600;
+  color: #4a4a4a;
+  margin-bottom: 0.4rem;
 }
+
+.form-control,
+.form-select {
+  border: 1.5px solid #B87612;
+  border-radius: var(--bs-border-radius);
+  padding: 0.6rem 0.85rem;
+  transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #B87612;
+  box-shadow: 0 0 0 0.25rem rgba(184, 118, 18, 0.25);
+  outline: 0;
+}
+
+.form-control::placeholder {
+  color: #a8a29a;
+}
+
+/* Checkboxes y radios */
+.form-check-input {
+  width: 1.15em;
+  height: 1.15em;
+  margin-top: 0.2em;
+  border: 1.5px solid #B87612;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.form-check-input[type="radio"] {
+  border-radius: 50%;
+}
+
+.form-check-input:checked {
+  background-color: #B87612;
+  border-color: #B87612;
+}
+
+.form-check-input:focus {
+  border-color: #B87612;
+  box-shadow: 0 0 0 0.25rem rgba(184, 118, 18, 0.25);
+}
+
+.form-check-label {
+  cursor: pointer;
+}
+
+.form-check {
+  border-radius: var(--bs-border-radius);
+}
+
+/* Tarjeta que envuelve el formulario */
+.card {
+  border-radius: var(--bs-border-radius-xl);
+}
+
+.link-brand {
+  color: #B89E12;
+}
+.link-brand:hover {
+  color: #B87612;
+  text-decoration: underline !important;
+}
+
+/* ---------- 5. Pantallas de autenticación ---------- */
+.auth-page {
+  min-height: 100vh;
+  background-color: #B89E12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.auth-page .container {
+    width: 100%;
+}
+
+.auth-page .card {
+  background-color: #fff;
+  border: 0;
+  border-radius: var(--bs-border-radius-xl);
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.15);
+  /*max-width: 560px;*/
+  width: 100%;
+}
+
+.auth-card h3 { /*antes auth-page*/
+  color: #B89E12;
+  /*font-weight: 700;*/
+}
+
+/* ---------- 6. Navbar y resto del sitio ---------- */
+.navbar-brand {
+  font-weight: 700;
+  color: #fff !important;
+}
+
+/* ---------- 7. Catálogo ---------- */
+.product-card {
+  background: #fff;
+  border-radius: var(--bs-border-radius);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.price {
+  color: #27ae60;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* ---------- 8. Errores ---------- */
+#tipoUsuarioError { display: none; }
+#tipoUsuarioError.visible { display: block; }

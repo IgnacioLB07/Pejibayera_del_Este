@@ -1,0 +1,137 @@
+<!--fragmento 1 login-->
+<section th:fragment="login" class="auth-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+                <div class="card auth-card">
+                    <div class="card-body p-4 p-sm-5">
+                        <h3 class="text-center mb-4 fw-bold">[[#{login.titulo}]]</h3>
+
+                        <!-- Alerta opcional de error o éxito de autenticación -->
+                        <div th:if="${param.error}" class="alert alert-danger text-center" role="alert">
+                            [[#{error.login}]]
+                        </div>
+                        <div th:if="${param.logout}" class="alert alert-success text-center" role="alert">
+                            [[#{login.logout}]]
+                        </div>
+
+                        <form th:action="@{/login}" method="POST">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">[[#{login.username}]]</label>
+                                <input type="text" class="form-control" id="username" name="username" required="required" placeholder="Ingrese su usuario" autocomplete="username"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">[[#{login.password}]]</label>
+                                <input type="password" class="form-control" id="password" name="password" required="required" placeholder="Ingrese su contraseña" autocomplete="current-password"/>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me"/>
+                                <label class="form-check-label" for="rememberMe">[[#{login.recordar}]]</label>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary py-2">[[#{login.entrar}]]</button>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="text-muted">[[#{login.registrar}]]</span>
+                                <a th:href="@{/registro}" class="text-decoration-none link-brand">[[#{registro.titulo}]]</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--fragmento 2 register-->
+<section th:fragment="register" class="auth-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <div class="card auth-card">
+                    <div class="card-body p-4 p-sm-5">
+                        <h3 class="text-center mb-4 fw-bold">[[#{registro.titulo}]]</h3>
+
+                        <form th:action="@{/registro/guardar}" method="POST">
+                            <div class="row">
+                                <div class="col-12 col-md-6 mb-3">
+                                    <label class="form-label">[[#{registro.tipo.usuario}]]</label>
+                                    <div class="d-flex flex-column flex-sm-row gap-2 gap-sm-4">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="tipoUsuario" id="tipoCliente" value="CLIENTE" required="required">
+                                            <label class="form-check-label" for="tipoCliente">[[#{registro.cliente}]]</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="tipoUsuario" id="tipoEmpresa" value="EMPRESA">
+                                            <label class="form-check-label" for="tipoEmpresa">[[#{registro.empresa}]]</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="invalid-feedback d-block" id="tipoUsuarioError">
+                                    [[#{registro.error.tipo.usuario}]]
+                                </div>
+                            </div>
+
+                            <div class="mb-3"> <!-- col-12 col-md-6  -->
+                                <label for="nombre" class="form-label">[[#{registro.nombre}]]</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required="required"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">[[#{registro.email}]]</label>
+                                <input type="email" class="form-control" id="email" name="correo" required="required" autocomplete="email"/>
+                                
+                                <div class="invalid-feedback" id="emailError">
+                                    [[#{registro.error.email}]]
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="passwordReg" class="form-label">[[#{login.password}]]</label>
+                                <input type="password" class="form-control" id="passwordReg" name="password" required="required" autocomplete="new-password" minlength="8"/>
+                            </div>
+
+                            <!--Validar Coincidencia con la contraseña digitada anteriormente-->
+                            <div class="mb-3">
+                                <label for="passwordConfReg" class="form-label">[[#{registro.confirmar.password}]]</label>
+                                <input type="password" class="form-control" id="passwordConfReg" name="passwordConf" required="required" autocomplete="new-password" minlength="8"/>
+                            
+                                <div class="alert alert-danger invalid-feedback text-center" id="passwordConfError" role="alert">
+                                    [[#{registro.error.password}]]
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="telefonoReg" class="form-label">[[#{registro.telefono}]]</label>
+                                <input type="tel" class="form-control" id="telefonoReg" name="telefono" minlength="8" maxlength="15" pattern="[0-9]{8-15}" autocomplete="tel"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="direccionReg" class="form-label">[[#{registro.direccion}]]</label>
+                                <input type="text" class="form-control" id="direccionReg" name="direccion" required="required" minlength="10" maxlength="150" autocomplete="street-address"/>
+                            </div>
+
+                            <div class="mb-3 form-check mb-3">
+                                <input type="checkbox" class="form-check-input" name="terminos" id="terminos" required="required"/>
+                                <label class="form-check-label" for="terminos">[[#{registro.terminos}]]</label>
+                            </div>
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary py-2">[[#{login.entrar}]]</button>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="text-muted">[[#{registro.ya.tienes.cuenta}]]</span> 
+                                <a th:href="@{/login}" class="text-decoration-none link-brand">[[#{login.titulo}]]</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

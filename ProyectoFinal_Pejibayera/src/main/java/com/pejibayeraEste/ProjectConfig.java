@@ -13,14 +13,18 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class ProjectConfig implements WebMvcConfigurer {
-    
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("index");
-//        registry.addViewController("/ejemplo2").setViewName("ejemplo2");
+        registry.addViewController("/info/listado").setViewName("info/listado");
+        registry.addViewController("/login").setViewName("autenticacion/login");
+        registry.addViewController("/registro").setViewName("autenticacion/register");
 //        registry.addViewController("/multimedia").setViewName("multimedia");
 //        registry.addViewController("/iframes").setViewName("iframes");
 //        registry.addViewController("/login").setViewName("login");
@@ -66,4 +70,30 @@ public class ProjectConfig implements WebMvcConfigurer {
         messageSource.setDefaultEncoding("UTF-8");
         return messageSource;
     }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(auth -> auth
+            // Rutas públicas accesibles para todos
+            .requestMatchers("/", "/info/**", "/catalogo/**", "/login", "/registro/**", "/error").permitAll()
+            .requestMatchers("/css/**","/js/**", "/images/**", "/favicon.ico", "/webjars/**").permitAll()
+            
+            // Rutas que exigen estar autenticado
+            .requestMatchers("/carrito/**", "/perfil/**").authenticated()
+            
+            // Resto de reglas según roles si los tienes (ej: ADMIN, VENDEDOR)
+            .anyRequest().authenticated())
+                
+            .formLogin(form -> form
+            .loginPage("/login") // Indica la ruta de tu vista login personalizada
+            .defaultSuccessUrl("/", true)
+            .permitAll())
+                
+            .logout(logout -> logout
+            .logoutUrl("/logout")
+            .logoutSuccessUrl("/login?logout")
+            .permitAll());
+        return http.build();
+    }
+
 }
