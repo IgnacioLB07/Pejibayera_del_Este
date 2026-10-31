@@ -277,3 +277,30 @@ body {
   color: #B8B212 !important;
   font-weight: 700 !important;
 }
+
+/* ----------- 12. Perfil ------------ */
+.perfil-section {
+  width: 100%;
+}
+
+.perfil-container {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.perfil-card-custom {
+  background-color: #ffffff !important;
+  border: 1.5px solid #B87612 !important;
+  border-radius: var(--bs-border-radius-xl) !important;
+}
+
+/* Ajustes de diseño para la tabla dentro del perfil */
+.perfil-card-custom .table {
+  border-color: #f0e6d2;
+}
+
+.perfil-card-custom .table th {
+  color: #4a4a4a;
+  font-weight: 600;
+  border-bottom-width: 2px;
+}

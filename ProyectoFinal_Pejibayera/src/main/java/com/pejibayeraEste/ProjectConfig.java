@@ -25,6 +25,8 @@ public class ProjectConfig implements WebMvcConfigurer {
         registry.addViewController("/info/listado").setViewName("info/listado");
         registry.addViewController("/login").setViewName("autenticacion/login");
         registry.addViewController("/registro").setViewName("autenticacion/register");
+        registry.addViewController("/perfil/listado").setViewName("perfil/listado");
+
 //        registry.addViewController("/multimedia").setViewName("multimedia");
 //        registry.addViewController("/iframes").setViewName("iframes");
 //        registry.addViewController("/login").setViewName("login");
@@ -75,11 +77,11 @@ public class ProjectConfig implements WebMvcConfigurer {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
             // Rutas públicas accesibles para todos
-            .requestMatchers("/", "/info/**", "/catalogo/**", "/login", "/registro/**", "/error").permitAll()
+            .requestMatchers("/", "/info/**", "/catalogo/**", "/login", "/registro/**", "/perfil/**", "/error").permitAll()
             .requestMatchers("/css/**","/js/**", "/images/**", "/favicon.ico", "/webjars/**").permitAll()
             
             // Rutas que exigen estar autenticado
-            .requestMatchers("/carrito/**", "/perfil/**").authenticated()
+            .requestMatchers("/carrito/**").authenticated() //pasar "/perfil/** si se quiere evitar el acceso sin logueo
             
             // Resto de reglas según roles si los tienes (ej: ADMIN, VENDEDOR)
             .anyRequest().authenticated())
