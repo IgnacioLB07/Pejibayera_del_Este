@@ -1,0 +1,156 @@
+
+<!-- Fragmento principal del perfil del usuario -->
+
+<section th:fragment="perfil" class="perfil-section py-5">
+
+    <div class="container perfil-container">
+
+        <div class="row g-4 align-items-start">
+
+            <!-- COLUMNA IZQUIERDA: Actualizar datos del usuario -->
+            <div class="col-12 col-lg-5">
+
+                <div class="card shadow-sm p-4 perfil-card-custom">
+
+                    <h3 class="fw-bold mb-4 text-dark">
+                        [[#{perfil.bienvenida.generica}]]
+                    </h3>
+
+                    <!-- Mensajes -->
+                    <div th:if="${todoOk}"
+                         class="alert alert-success"
+                         th:text="${todoOk}">
+                    </div>
+
+                    <div th:if="${error}"
+                         class="alert alert-danger"
+                         th:text="${error}">
+                    </div>
+
+                    <!-- Formulario de actualización -->
+                    <form th:action="@{/perfil/guardar}" method="POST">
+
+                        <div class="mb-3">
+
+                            <label for="nombre" class="form-label">
+                                [[#{registro.nombre}]]
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   id="nombre"
+                                   name="nombre"
+                                   th:value="${usuario != null ? usuario.nombre : ''}"
+                                   placeholder="Ingrese su nombre"
+                                   required/>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="correo" class="form-label">
+                                [[#{registro.email}]]
+                            </label>
+
+                            <input type="email"
+                                   class="form-control"
+                                   id="correo"
+                                   name="correo"
+                                   th:value="${usuario != null ? usuario.correo : ''}"
+                                   placeholder="correo@ejemplo.com"
+                                   required/>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="telefono" class="form-label">
+                                [[#{registro.telefono}]]
+                            </label>
+
+                            <input type="tel"
+                                   class="form-control"
+                                   id="telefono"
+                                   name="telefono"
+                                   th:value="${usuario != null ? usuario.telefono : ''}"
+                                   placeholder="8888-8888"
+                                   required/>
+
+                        </div>
+
+                        <div class="mb-3">
+
+                            <label for="direccion" class="form-label">
+                                [[#{registro.direccion}]]
+                            </label>
+
+                            <textarea class="form-control"
+                                      id="direccion"
+                                      name="direccion"
+                                      rows="2"
+                                      th:text="${usuario != null ? usuario.direccion : ''}"
+                                      placeholder="Ingrese su dirección"
+                                      required>
+                            </textarea>
+
+                        </div>
+
+                        <div class="d-grid mt-4">
+
+                            <button type="submit" class="btn btn-primary">
+                                [[#{accion.actualizar}]]
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            <!-- COLUMNA DERECHA: Acceso al historial real -->
+            <div class="col-12 col-lg-7">
+
+                <div class="card shadow-sm p-4 perfil-card-custom">
+
+                    <div class="text-center py-4">
+
+                        <i class="fas fa-shopping-bag fa-3x text-secondary mb-3"></i>
+
+                        <h3 class="fw-bold mb-3 text-dark">
+                            Historial de compras
+                        </h3>
+
+                        <p class="text-muted mb-4">
+
+                            Consulta todos tus pedidos, los productos que
+                            compraste, las cantidades, los precios y el
+                            estado de cada compra.
+
+                        </p>
+
+                        <div class="d-grid">
+
+                            <a th:href="@{/pedido/historial}"
+                               class="btn btn-primary">
+
+                                <i class="fas fa-history me-2"></i>
+                                Ver historial de compras
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>

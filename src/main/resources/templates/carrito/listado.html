@@ -1,0 +1,203 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+    <head th:replace="~{general/fragmentos :: head}"></head>
+
+    <body>
+
+        <header th:replace="~{general/fragmentos :: header}"></header>
+
+        <main class="container py-5">
+
+            <h2 class="fw-bold mb-4">
+                <i class="fas fa-shopping-cart me-2"></i>
+                Mi carrito de compras
+            </h2>
+
+            <!-- Mensajes -->
+            <div th:if="${todoOk}" class="alert alert-success"
+                 th:text="${todoOk}"></div>
+
+            <div th:if="${error}" class="alert alert-danger"
+                 th:text="${error}"></div>
+
+            <!-- Carrito vacío -->
+            <div th:if="${#lists.isEmpty(detalles)}"
+                 class="text-center py-5">
+
+                <i class="fas fa-shopping-basket fa-4x text-secondary mb-3"></i>
+
+                <h4>Tu carrito está vacío</h4>
+
+                <p class="text-muted">
+                    Todavía no has agregado productos a tu carrito.
+                </p>
+
+                <a th:href="@{/}" class="btn btn-success mt-3">
+                    Seguir comprando
+                </a>
+
+            </div>
+
+            <!-- Productos del carrito -->
+            <div th:unless="${#lists.isEmpty(detalles)}"
+                 class="row g-4">
+
+                <div class="col-lg-8">
+
+                    <div th:each="d : ${detalles}"
+                         class="card shadow-sm mb-3">
+
+                        <div class="card-body">
+
+                            <div class="row align-items-center">
+
+                                <!-- Imagen -->
+                                <div class="col-md-3 text-center">
+
+                                    <img th:if="${d.producto.rutaImagen != null
+                                                 and !#strings.isEmpty(d.producto.rutaImagen)}"
+                                         th:src="${d.producto.rutaImagen}"
+                                         th:alt="${d.producto.nombre}"
+                                         class="img-fluid"
+                                         style="max-height: 120px; object-fit: contain;"/>
+
+                                    <i th:unless="${d.producto.rutaImagen != null
+                                                    and !#strings.isEmpty(d.producto.rutaImagen)}"
+                                       class="fas fa-image fa-3x text-secondary"></i>
+
+                                </div>
+
+                                <!-- Información -->
+                                <div class="col-md-5">
+
+                                    <h5 class="fw-bold"
+                                        th:text="${d.producto.nombre}">
+                                        Producto
+                                    </h5>
+
+                                    <p class="text-muted mb-2"
+                                       th:text="${d.producto.detalle}">
+                                        Descripción
+                                    </p>
+
+                                    <p class="mb-0">
+                                        Precio unitario:
+                                        <strong th:text="${#numbers.formatCurrency(d.precio)}">
+                                            ₡0.00
+                                        </strong>
+                                    </p>
+
+                                </div>
+
+                                <!-- Cantidad y acciones -->
+                                <div class="col-md-4">
+
+                                    <form th:action="@{/carrito/actualizar}"
+                                          method="POST"
+                                          class="mb-2">
+
+                                        <input type="hidden"
+                                               name="idDetalle"
+                                               th:value="${d.idDetalle}"/>
+
+                                        <label class="form-label">
+                                            Cantidad
+                                        </label>
+
+                                        <div class="input-group">
+
+                                            <input type="number"
+                                                   name="cantidad"
+                                                   min="1"
+                                                   th:value="${d.cantidad}"
+                                                   class="form-control"
+                                                   required/>
+
+                                            <button type="submit"
+                                                    class="btn btn-outline-success">
+                                                Actualizar
+                                            </button>
+
+                                        </div>
+
+                                    </form>
+
+                                    <form th:action="@{/carrito/eliminar}"
+                                          method="POST">
+
+                                        <input type="hidden"
+                                               name="idDetalle"
+                                               th:value="${d.idDetalle}"/>
+
+                                        <button type="submit"
+                                                class="btn btn-outline-danger btn-sm w-100">
+                                            <i class="fas fa-trash me-1"></i>
+                                            Eliminar
+                                        </button>
+
+                                    </form>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Resumen de compra -->
+                <div class="col-lg-4">
+
+                    <div class="card shadow-sm">
+
+                        <div class="card-header bg-white">
+                            <h5 class="fw-bold mb-0">
+                                Resumen de compra
+                            </h5>
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <span>Productos:</span>
+                                <strong th:text="${#lists.size(detalles)}">
+                                    0
+                                </strong>
+                            </div>
+
+                            <hr/>
+
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Total:</strong>
+
+                                <strong class="text-success fs-4"
+                                        th:text="${#numbers.formatCurrency(totalCarrito)}">
+                                    ₡0.00
+                                </strong>
+                            </div>
+
+                            <a th:href="@{/}"
+                               class="btn btn-outline-secondary w-100">
+                                Seguir comprando
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+
+    </body>
+</html>

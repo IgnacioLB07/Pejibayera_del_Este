@@ -1,0 +1,478 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gestión de productos | Pejibayera del Este</title>
+
+    <link rel="stylesheet"
+          th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}">
+
+    <style>
+        body {
+            background-color: #f6f8f4;
+        }
+
+        .encabezado {
+            background-color: #285c3b;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+        }
+
+        .btn-verde {
+            background-color: #285c3b;
+            color: white;
+        }
+
+        .btn-verde:hover {
+            background-color: #1e472e;
+            color: white;
+        }
+
+        .imagen-producto {
+            width: 65px;
+            height: 65px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #f1f3ed;
+        }
+
+        #vistaPrevia {
+            max-width: 180px;
+            max-height: 160px;
+            object-fit: contain;
+            display: none;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container py-4">
+
+    <!-- ENCABEZADO -->
+    <header class="encabezado">
+        <h2>Gestión de productos</h2>
+        <p class="mb-0">
+            Pejibayera del Este | Administración del catálogo
+        </p>
+    </header>
+
+    <!-- MENSAJES -->
+    <div th:if="${todoOk}"
+         class="alert alert-success"
+         th:text="${todoOk}">
+    </div>
+
+    <div th:if="${error}"
+         class="alert alert-danger"
+         th:text="${error}">
+    </div>
+
+    <!-- FORMULARIO -->
+    <section class="card shadow-sm mb-4">
+
+        <div class="card-header bg-white py-3">
+            <h4 id="tituloFormulario" class="mb-0">
+                Agregar producto
+            </h4>
+        </div>
+
+        <div class="card-body">
+
+            <form th:action="@{/producto/guardar}"
+                  th:object="${producto}"
+                  method="post"
+                  enctype="multipart/form-data"
+                  id="formProducto">
+
+                <input type="hidden"
+                       th:field="*{idProducto}"
+                       id="idProducto">
+
+                <div class="row g-3">
+
+                    <!-- NOMBRE -->
+                    <div class="col-md-6">
+                        <label class="form-label">Nombre del producto</label>
+
+                        <input type="text"
+                               class="form-control"
+                               th:field="*{nombre}"
+                               required>
+                    </div>
+
+                    <!-- PRECIO -->
+                    <div class="col-md-3">
+                        <label class="form-label">Precio (₡)</label>
+
+                        <input type="number"
+                               class="form-control"
+                               th:field="*{precio}"
+                               min="0.01"
+                               step="0.01"
+                               required>
+                    </div>
+
+                    <!-- EXISTENCIAS -->
+                    <div class="col-md-3">
+                        <label class="form-label">Existencias</label>
+
+                        <input type="number"
+                               class="form-control"
+                               th:field="*{existencias}"
+                               min="0"
+                               required>
+                    </div>
+
+                    <!-- DETALLE -->
+                    <div class="col-md-12">
+                        <label class="form-label">Descripción</label>
+
+                        <textarea class="form-control"
+                                  th:field="*{detalle}"
+                                  rows="3"
+                                  required>
+                        </textarea>
+                    </div>
+
+                    <!-- CATEGORÍA -->
+                    <div class="col-md-6">
+                        <label class="form-label">Categoría</label>
+
+                        <select class="form-select"
+                                name="idCategoria"
+                                id="idCategoria"
+                                required>
+
+                            <option value="">Seleccione una categoría</option>
+
+                            <option th:each="c : ${categorias}"
+                                    th:value="${c.idCategoria}"
+                                    th:text="${c.nombre}">
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <!-- EMPRESA: SOLO SUPERADMINISTRADOR -->
+                    <div class="col-md-6" th:if="${empresas != null}">
+
+                        <label class="form-label">Empresa</label>
+
+                        <select class="form-select"
+                                name="idEmpresa"
+                                id="idEmpresa"
+                                required>
+
+                            <option value="">Seleccione una empresa</option>
+
+                            <option th:each="e : ${empresas}"
+                                    th:value="${e.idEmpresa}"
+                                    th:text="|Empresa #${e.idEmpresa}|">
+                            </option>
+
+                        </select>
+                    </div>
+
+                    <!-- EMPRESA ASIGNADA AL ADMINISTRADOR -->
+                    <div class="col-md-6"
+                         th:if="${empresaAsignada != null}">
+
+                        <label class="form-label">Empresa asignada</label>
+
+                        <input type="text"
+                               class="form-control"
+                               th:value="|Empresa #${empresaAsignada.idEmpresa}|"
+                               disabled>
+                    </div>
+
+                    <!-- IMAGEN -->
+                    <div class="col-md-12">
+
+                        <label class="form-label">
+                            Imagen del producto
+                        </label>
+
+                        <input type="file"
+                               class="form-control"
+                               name="imagenFile"
+                               id="imagenFile"
+                               accept="image/jpeg,image/png">
+
+                        <small class="text-muted">
+                            Formatos JPG y PNG. Tamaño máximo: 2 MB.
+                        </small>
+
+                        <div>
+                            <img id="vistaPrevia"
+                                 alt="Vista previa del producto">
+                        </div>
+
+                        <small id="imagenActual"
+                               class="text-muted d-block mt-2">
+                        </small>
+
+                    </div>
+
+                </div>
+
+                <!-- BOTONES -->
+                <div class="d-flex gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-verde"
+                            id="btnGuardar">
+                        Guardar producto
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            onclick="limpiarFormulario()">
+                        Limpiar
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </section>
+
+    <!-- TABLA DE PRODUCTOS -->
+    <section class="card shadow-sm">
+
+        <div class="card-header bg-white py-3">
+            <h4 class="mb-0">Productos registrados</h4>
+        </div>
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Imagen</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Existencias</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr th:each="p : ${productos}">
+
+                            <td th:text="${p.idProducto}"></td>
+
+                            <td>
+
+                                <img th:if="${p.rutaImagen != null and !#strings.isEmpty(p.rutaImagen)}"
+                                     th:src="${p.rutaImagen}"
+                                     class="imagen-producto"
+                                     th:alt="${p.nombre}">
+
+                                <span th:unless="${p.rutaImagen != null and !#strings.isEmpty(p.rutaImagen)}">
+                                    Sin imagen
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <strong th:text="${p.nombre}"></strong>
+                                <br>
+                                <small class="text-muted"
+                                       th:text="${p.detalle}">
+                                </small>
+                            </td>
+
+                            <td th:text="|₡${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}|">
+                            </td>
+
+                            <td th:text="${p.existencias}"></td>
+
+                            <td th:text="${p.categoria.nombre}"></td>
+
+                            <td>
+                                <span th:if="${p.activo}"
+                                      class="badge bg-success">
+                                    Activo
+                                </span>
+
+                                <span th:unless="${p.activo}"
+                                      class="badge bg-secondary">
+                                    Inactivo
+                                </span>
+                            </td>
+
+                            <td>
+
+                                <button type="button"
+                                        class="btn btn-sm btn-warning mb-1 btn-editar"
+                                        th:if="${p.activo}"
+                                        th:data-id="${p.idProducto}"
+                                        th:data-nombre="${p.nombre}"
+                                        th:data-detalle="${p.detalle}"
+                                        th:data-precio="${p.precio}"
+                                        th:data-existencias="${p.existencias}"
+                                        th:data-categoria="${p.categoria.idCategoria}"
+                                        th:data-empresa="${p.empresa.idEmpresa}"
+                                        th:data-imagen="${p.rutaImagen}">
+                                    Editar
+                                </button>
+
+                                <form th:if="${p.activo}"
+                                      th:action="@{/producto/eliminar}"
+                                      method="post"
+                                      class="d-inline"
+                                      onsubmit="return confirm('¿Desea desactivar este producto?');">
+
+                                    <input type="hidden"
+                                           name="idProducto"
+                                           th:value="${p.idProducto}">
+
+                                    <button type="submit"
+                                            class="btn btn-sm btn-danger mb-1">
+                                        Desactivar
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        </tr>
+
+                        <tr th:if="${productos == null or productos.empty}">
+                            <td colspan="8" class="text-center py-4">
+                                No hay productos registrados.
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+<script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+
+<script>
+
+    const archivoImagen = document.getElementById("imagenFile");
+    const vistaPrevia = document.getElementById("vistaPrevia");
+
+    // Vista previa de la imagen seleccionada.
+    archivoImagen.addEventListener("change", function () {
+
+        const archivo = this.files[0];
+
+        if (!archivo) {
+            return;
+        }
+
+        const formatos = ["image/jpeg", "image/png"];
+
+        if (!formatos.includes(archivo.type)) {
+            alert("Seleccione una imagen JPG o PNG.");
+            this.value = "";
+            return;
+        }
+
+        if (archivo.size > 2 * 1024 * 1024) {
+            alert("La imagen no puede superar los 2 MB.");
+            this.value = "";
+            return;
+        }
+
+        vistaPrevia.src = URL.createObjectURL(archivo);
+        vistaPrevia.style.display = "block";
+    });
+
+    // Carga los datos de un producto en el formulario para editarlo.
+    document.querySelectorAll(".btn-editar").forEach(function (boton) {
+
+        boton.addEventListener("click", function () {
+
+            document.getElementById("idProducto").value = this.dataset.id;
+
+            document.getElementById("nombre").value = this.dataset.nombre;
+            document.getElementById("detalle").value = this.dataset.detalle;
+            document.getElementById("precio").value = this.dataset.precio;
+            document.getElementById("existencias").value = this.dataset.existencias;
+
+            document.getElementById("idCategoria").value = this.dataset.categoria;
+
+            const empresa = document.getElementById("idEmpresa");
+
+            if (empresa) {
+                empresa.value = this.dataset.empresa;
+            }
+
+            document.getElementById("tituloFormulario").textContent =
+                    "Editar producto";
+
+            document.getElementById("btnGuardar").textContent =
+                    "Actualizar producto";
+
+            const imagen = this.dataset.imagen;
+
+            if (imagen && imagen !== "null") {
+                vistaPrevia.src = imagen;
+                vistaPrevia.style.display = "block";
+
+                document.getElementById("imagenActual").textContent =
+                        "Imagen actual. Puede seleccionar otra para reemplazarla.";
+            } else {
+                vistaPrevia.style.display = "none";
+                document.getElementById("imagenActual").textContent =
+                        "Este producto todavía no tiene imagen.";
+            }
+
+            document.getElementById("formProducto").scrollIntoView({
+                behavior: "smooth"
+            });
+        });
+    });
+
+    function limpiarFormulario() {
+
+        document.getElementById("formProducto").reset();
+
+        document.getElementById("idProducto").value = "";
+
+        document.getElementById("tituloFormulario").textContent =
+                "Agregar producto";
+
+        document.getElementById("btnGuardar").textContent =
+                "Guardar producto";
+
+        vistaPrevia.style.display = "none";
+        vistaPrevia.src = "";
+
+        document.getElementById("imagenActual").textContent = "";
+    }
+
+</script>
+
+</body>
+</html>

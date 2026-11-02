@@ -1,0 +1,347 @@
+
+
+<!-- FRAGMENTO 1: PESTAÑAS DE CATEGORÍAS -->
+
+
+<section th:fragment="tabs" class="py-3 mb-4">
+
+    <div class="d-flex justify-content-center px-5">
+
+        <ul class="nav navbar-nav">
+
+            <li class="nav-item">
+                <a th:href="@{/}"
+                   class="nav-link text-dark fw-semibold custom-nav-link"
+                   aria-current="page">
+                    [[#{consultas.todas}]]
+                </a>
+            </li>
+
+            <li th:each="c : ${categorias}" class="nav-item">
+
+                <a th:href="@{/consultas/{id}(id=${c.idCategoria})}"
+                   class="nav-link text-dark fw-semibold custom-nav-link">
+
+                    [[${c.nombre}]]
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
+
+
+
+<!-- FRAGMENTO 2: TARJETAS DE PRODUCTOS  -->
+
+
+<section th:fragment="tarjetas" class="container py-4">
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+
+        <div th:each="p : ${productos}" class="col">
+
+            <div class="card h-100 shadow-sm">
+
+                <!-- Imagen del producto -->
+                <div class="d-flex justify-content-center align-items-center bg-light p-3"
+                     style="height: 200px;">
+
+                    <img th:if="${p.rutaImagen != null and !#strings.isEmpty(p.rutaImagen)}"
+                         th:src="${p.rutaImagen}"
+                         class="img-fluid"
+                         th:alt="${p.nombre}"
+                         style="max-height: 100%; object-fit: contain;"/>
+
+                    <i th:unless="${p.rutaImagen != null and !#strings.isEmpty(p.rutaImagen)}"
+                       class="fas fa-image fa-3x text-secondary"></i>
+
+                </div>
+
+                <!-- Nombre -->
+                <div class="card-header bg-white">
+
+                    <h5 class="card-title text-center text-truncate mb-0"
+                        th:text="${p.nombre}">
+                        Título
+                    </h5>
+
+                </div>
+
+                <!-- Descripción -->
+                <div class="card-body d-flex flex-column">
+
+                    <p class="card-text text-muted mb-auto text-truncate"
+                       th:text="${p.detalle}">
+                        Detalle
+                    </p>
+
+                </div>
+
+                <!-- Precio, existencias y botón -->
+                <div class="card-footer bg-white d-flex justify-content-between align-items-center">
+
+                    <div class="fw-bold">
+
+                        <span class="text-success h5"
+                              th:text="|₡${#numbers.formatDecimal(p.precio, 1, 'COMMA', 2, 'POINT')}|">
+                            ₡0.00
+                        </span>
+
+                        <span th:if="${p.existencias > 0}"
+                              class="badge text-bg-success ms-2"
+                              th:text="${p.existencias} + ' unidades'">
+                        </span>
+
+                        <span th:unless="${p.existencias > 0}"
+                              class="badge text-bg-danger ms-2">
+                            Agotado
+                        </span>
+
+                    </div>
+
+                    <!-- Formulario para agregar al carrito -->
+                    <form th:action="@{/carrito/agregar}"
+                          method="POST"
+                          class="d-inline">
+
+                        <input type="hidden"
+                               th:value="${p.idProducto}"
+                               name="idProducto"/>
+
+                        <button type="submit"
+                                class="btn btn-sm btn-primary"
+                                th:disabled="${p.existencias == 0}">
+
+                            <i class="fas fa-cart-plus"></i>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- FRAGMENTO 3: VENTANA EMERGENTE DEL CARRITO -->
+
+
+<div th:fragment="carritoModal"
+     class="modal fade"
+     id="carritoModal"
+     tabindex="-1"
+     aria-labelledby="carritoModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+
+        <div class="modal-content">
+
+            <!-- Encabezado -->
+            <div class="modal-header">
+
+                <h5 class="modal-title fw-bold" id="carritoModalLabel">
+
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    Mi carrito de compras
+
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Cerrar">
+                </button>
+
+            </div>
+
+
+            <!-- Contenido del carrito -->
+            <div class="modal-body">
+                <div th:if="${todoOk}"
+                     class="alert alert-success"
+                     th:text="${todoOk}">
+                </div>
+
+                <div th:if="${error}"
+                     class="alert alert-danger"
+                     th:text="${error}">
+                </div>
+
+                <!-- Mensaje cuando está vacío -->
+                <div th:if="${#lists.isEmpty(detalles)}"
+                     class="text-center py-4">
+
+                    <i class="fas fa-shopping-basket fa-3x text-secondary mb-3"></i>
+
+                    <h5>Tu carrito está vacío</h5>
+
+                    <p class="text-muted">
+
+                        Agrega algunos productos para comenzar tu compra.
+
+                    </p>
+
+                </div>
+
+
+                <!-- Productos agregados -->
+                <div th:each="d : ${detalles}"
+                     class="border-bottom py-3">
+
+                    <div class="row align-items-center">
+
+                        <!-- Imagen -->
+                        <div class="col-3 text-center">
+
+                            <img th:if="${d.producto.rutaImagen != null and !#strings.isEmpty(d.producto.rutaImagen)}"
+                                 th:src="${d.producto.rutaImagen}"
+                                 th:alt="${d.producto.nombre}"
+                                 class="img-fluid"
+                                 style="max-height: 90px; object-fit: contain;"/>
+
+                            <i th:unless="${d.producto.rutaImagen != null and !#strings.isEmpty(d.producto.rutaImagen)}"
+                               class="fas fa-image fa-2x text-secondary"></i>
+
+                        </div>
+
+
+                        <!-- Información del producto -->
+                        <div class="col-5">
+
+                            <h6 class="fw-bold"
+                                th:text="${d.producto.nombre}">
+                                Producto
+                            </h6>
+
+                            <p class="small text-muted mb-1"
+                               th:text="${d.producto.detalle}">
+                                Descripción
+                            </p>
+
+                            <span class="text-success fw-bold"
+                                  th:text="|₡${#numbers.formatDecimal(d.precio, 1, 'COMMA', 2, 'POINT')}|">
+                                ₡0.00
+                            </span>
+
+                        </div>
+
+
+                        <!-- Cantidad y acciones -->
+                        <div class="col-4">
+
+                            <!-- Actualizar cantidad -->
+                            <form th:action="@{/carrito/actualizar}"
+                                  method="POST">
+
+                                <input type="hidden"
+                                       name="idDetalle"
+                                       th:value="${d.idDetalle}"/>
+
+                                <label class="form-label small">
+                                    Cantidad
+                                </label>
+
+                                <div class="input-group input-group-sm">
+
+                                    <input type="number"
+                                           name="cantidad"
+                                           min="1"
+                                           th:value="${d.cantidad}"
+                                           class="form-control"
+                                           required/>
+
+                                    <button type="submit"
+                                            class="btn btn-outline-success">
+
+                                        <i class="fas fa-sync"></i>
+
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+
+                            <!-- Eliminar producto -->
+                            <form th:action="@{/carrito/eliminar}"
+                                  method="POST"
+                                  class="mt-2">
+
+                                <input type="hidden"
+                                       name="idDetalle"
+                                       th:value="${d.idDetalle}"/>
+
+                                <button type="submit"
+                                        class="btn btn-outline-danger btn-sm w-100">
+
+                                    <i class="fas fa-trash me-1"></i>
+                                    Eliminar
+
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Resumen del carrito -->
+            <div class="modal-footer d-flex justify-content-between">
+
+                <div>
+
+                    <span class="text-muted">Total:</span>
+
+                    <strong class="text-success fs-5"
+                            th:text="|₡${#numbers.formatDecimal(totalCarrito, 1, 'COMMA', 2, 'POINT')}|">
+                        ₡0.00
+                    </strong>
+
+                </div>
+
+                <div class="d-flex gap-2">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal">
+                        Seguir comprando
+                    </button>
+
+                    <form th:if="${detalles != null and !detalles.empty}"
+                          th:action="@{/pedido/confirmar}"
+                          method="POST">
+
+                        <button type="submit"
+                                class="btn btn-success">
+
+                            <i class="fas fa-check-circle me-1"></i>
+                            Finalizar compra
+
+                        </button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div> 
+
+</div>

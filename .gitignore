@@ -1,0 +1,47 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### CONFIGURACIONES PRIVADAS Y CREDENCIALES ###
+
+# Configuración local de MySQL y Firebase
+/src/main/resources/application-local.properties
+
+# Credenciales de Firebase
+serviceAccountKey.json
+*firebase-adminsdk*.json
+*.pem
+
+# Variables de entorno
+.env
+.env.*
