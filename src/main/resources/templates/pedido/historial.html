@@ -1,0 +1,186 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+    <head th:replace="~{general/fragmentos :: head}"></head>
+
+    <body>
+
+        <header th:replace="~{general/fragmentos :: header}"></header>
+
+        <main class="container py-5">
+
+            <h2 class="fw-bold mb-4">
+                <i class="fas fa-history me-2"></i>
+                Historial de pedidos
+            </h2>
+
+            <!-- Mensaje de éxito -->
+            <div th:if="${todoOk}"
+                 class="alert alert-success"
+                 th:text="${todoOk}">
+            </div>
+
+            <!-- Mensaje de error -->
+            <div th:if="${error}"
+                 class="alert alert-danger"
+                 th:text="${error}">
+            </div>
+
+            <!-- Cuando existen pedidos -->
+            <div th:if="${pedidos != null and !pedidos.empty}"
+                 class="card shadow-sm">
+
+                <div class="card-body">
+
+                    <div class="table-responsive">
+
+                        <table class="table table-striped table-hover align-middle">
+
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Fecha de compra</th>
+                                    <th>Total</th>
+                                    <th>Estado</th>
+                                    <th>Detalle</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr th:each="p : ${pedidos}">
+
+                                    <td th:text="|#${p.idPedido}|">
+                                        #1
+                                    </td>
+
+                                    <td th:text="${#temporals.format(p.fecha, 'dd/MM/yyyy HH:mm')}">
+                                        Fecha
+                                    </td>
+
+                                    <td class="fw-bold text-success"
+                                        th:text="|₡${#numbers.formatDecimal(p.total, 1, 'COMMA', 2, 'POINT')}|">
+                                        ₡0.00
+                                    </td>
+
+                                    <!-- Estado del pedido -->
+                                    <td>
+
+                                        <span th:if="${p.estado == 'Pendiente'}"
+                                              class="badge text-bg-warning"
+                                              th:text="${p.estado}">
+                                            Pendiente
+                                        </span>
+
+                                        <span th:if="${p.estado == 'Confirmado'}"
+                                              class="badge text-bg-info"
+                                              th:text="${p.estado}">
+                                            Confirmado
+                                        </span>
+
+                                        <span th:if="${p.estado == 'Completado'}"
+                                              class="badge text-bg-success"
+                                              th:text="${p.estado}">
+                                            Completado
+                                        </span>
+
+                                        <span th:if="${p.estado == 'Cancelado'}"
+                                              class="badge text-bg-danger"
+                                              th:text="${p.estado}">
+                                            Cancelado
+                                        </span>
+
+                                        <span th:if="${p.estado != 'Pendiente'
+                                                      and p.estado != 'Confirmado'
+                                                      and p.estado != 'Completado'
+                                                      and p.estado != 'Cancelado'}"
+                                              class="badge text-bg-secondary"
+                                              th:text="${p.estado}">
+                                            Otro estado
+                                        </span>
+
+                                    </td>
+
+                                    <!-- Ver detalle -->
+                                    <td>
+                                        <a th:href="@{/pedido/detalle(idPedido=${p.idPedido})}"
+                                           class="btn btn-outline-primary btn-sm">
+
+                                            <i class="fas fa-eye me-1"></i>
+                                            Ver detalle
+
+                                        </a>
+                                    </td>
+
+                                    <!-- Cancelar pedido -->
+                                    <td>
+
+                                        <form th:if="${p.estado == 'Pendiente'}"
+                                              th:action="@{/pedido/cancelar}"
+                                              method="POST"
+                                              onsubmit="return confirm('¿Estás seguro de que deseas cancelar este pedido? Las unidades volverán al inventario.');">
+
+                                            <input type="hidden"
+                                                   name="idPedido"
+                                                   th:value="${p.idPedido}"/>
+
+                                            <button type="submit"
+                                                    class="btn btn-outline-danger btn-sm">
+
+                                                <i class="fas fa-times-circle me-1"></i>
+                                                Cancelar
+
+                                            </button>
+
+                                        </form>
+
+                                        <span th:if="${p.estado != 'Pendiente'}"
+                                              class="text-muted small">
+                                            No disponible
+                                        </span>
+
+                                    </td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Cuando no existen pedidos -->
+            <div th:if="${pedidos == null or pedidos.empty}"
+                 class="text-center py-5">
+
+                <i class="fas fa-receipt fa-4x text-secondary mb-3"></i>
+
+                <h4>Aún no tienes pedidos</h4>
+
+                <p class="text-muted">
+                    Cuando realices una compra, aparecerá aquí.
+                </p>
+
+                <a th:href="@{/}"
+                   class="btn btn-success mt-2">
+
+                    Ir a la tienda
+
+                </a>
+
+            </div>
+
+        </main>
+
+        <footer th:replace="~{general/fragmentos :: footer}"></footer>
+
+    </body>
+</html>

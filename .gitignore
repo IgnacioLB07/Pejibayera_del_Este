@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### CONFIGURACIONES PRIVADAS Y CREDENCIALES ###
+
+# Configuración local de MySQL y Firebase
+/src/main/resources/application-local.properties
+
+# Credenciales de Firebase
+serviceAccountKey.json
+*firebase-adminsdk*.json
+*.pem
+
+# Variables de entorno
+.env
+.env.*

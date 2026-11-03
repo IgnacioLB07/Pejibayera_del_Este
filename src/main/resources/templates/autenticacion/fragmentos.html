@@ -1,0 +1,231 @@
+<!--fragmento 1 login-->
+<section th:fragment="login" class="auth-page">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-7 col-lg-5">
+                <div class="card auth-card">
+                    <div class="card-body p-4 p-sm-5">
+                        <h3 class="text-center mb-4 fw-bold">[[#{login.titulo}]]</h3>
+
+                        <!-- Alerta opcional de error o éxito de autenticación -->
+                        <div th:if="${param.error}" class="alert alert-danger text-center" role="alert">
+                            [[#{error.login}]]
+                        </div>
+                        <div th:if="${param.logout}" class="alert alert-success text-center" role="alert">
+                            [[#{login.logout}]]
+                        </div>
+
+                        <form th:action="@{/login}" method="POST">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">[[#{login.username}]]</label>
+                                <input type="text" class="form-control" id="username" name="username" required="required" placeholder="Ingrese su usuario" autocomplete="username"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">[[#{login.password}]]</label>
+                                <input type="password" class="form-control" id="password" name="password" required="required" placeholder="Ingrese su contraseña" autocomplete="current-password"/>
+                            </div>
+
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="rememberMe" name="remember-me"/>
+                                <label class="form-check-label" for="rememberMe">[[#{login.recordar}]]</label>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary py-2">[[#{login.entrar}]]</button>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="text-muted">[[#{login.registrar}]]</span>
+                                <a th:href="@{/registro}" class="text-decoration-none link-brand">[[#{registro.titulo}]]</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--fragmento 2 register-->
+<section th:fragment="register" class="auth-page">
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+
+                <div class="card auth-card">
+
+                    <div class="card-body p-4 p-sm-5">
+
+                        <h3 class="text-center mb-4 fw-bold">
+                            [[#{registro.titulo}]]
+                        </h3>
+
+                        <!-- Mensajes de error -->
+                        <div th:if="${error}"
+                             class="alert alert-danger"
+                             th:text="${error}">
+                        </div>
+
+                        <!-- Mensajes de éxito -->
+                        <div th:if="${todoOk}"
+                             class="alert alert-success"
+                             th:text="${todoOk}">
+                        </div>
+
+                        <form th:action="@{/registro/guardar}"
+                              method="POST">
+
+                            <!-- Nombre y apellido -->
+                            <div class="row">
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label for="nombre" class="form-label">
+                                        [[#{registro.nombre}]]
+                                    </label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           id="nombre"
+                                           name="nombre"
+                                           maxlength="100"
+                                           required
+                                           autocomplete="given-name"/>
+
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label for="apellido" class="form-label">
+                                        Apellido
+                                    </label>
+
+                                    <input type="text"
+                                           class="form-control"
+                                           id="apellido"
+                                           name="apellido"
+                                           maxlength="100"
+                                           required
+                                           autocomplete="family-name"/>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Correo -->
+                            <div class="mb-3">
+
+                                <label for="correo" class="form-label">
+                                    [[#{registro.email}]]
+                                </label>
+
+                                <input type="email"
+                                       class="form-control"
+                                       id="correo"
+                                       name="correo"
+                                       maxlength="150"
+                                       required
+                                       autocomplete="email"/>
+
+                            </div>
+
+
+                            <!-- Contraseña -->
+                            <div class="mb-3">
+
+                                <label for="passwordReg" class="form-label">
+                                    [[#{login.password}]]
+                                </label>
+
+                                <input type="password"
+                                       class="form-control"
+                                       id="passwordReg"
+                                       name="password"
+                                       minlength="8"
+                                       maxlength="255"
+                                       required
+                                       autocomplete="new-password"/>
+
+                            </div>
+
+
+                            <!-- Confirmar contraseña -->
+                            <div class="mb-3">
+
+                                <label for="passwordConfReg" class="form-label">
+                                    [[#{registro.confirmar.password}]]
+                                </label>
+
+                                <input type="password"
+                                       class="form-control"
+                                       id="passwordConfReg"
+                                       name="passwordConf"
+                                       required
+                                       autocomplete="new-password"/>
+
+                            </div>
+
+
+                            <!-- Teléfono -->
+                            <div class="mb-3">
+
+                                <label for="telefonoReg" class="form-label">
+                                    [[#{registro.telefono}]]
+                                </label>
+
+                                <input type="tel"
+                                       class="form-control"
+                                       id="telefonoReg"
+                                       name="telefono"
+                                       maxlength="20"
+                                       autocomplete="tel"/>
+
+                            </div>
+
+
+                            <!-- Botón de registro -->
+                            <div class="d-grid mb-3">
+
+                                <button type="submit"
+                                        class="btn btn-primary py-2">
+
+                                    Registrarme
+
+                                </button>
+
+                            </div>
+
+
+                            <!-- Enlace al login -->
+                            <div class="text-center">
+
+                                <span class="text-muted">
+                                    [[#{registro.ya.tienes.cuenta}]]
+                                </span>
+
+                                <a th:href="@{/login}"
+                                   class="text-decoration-none link-brand">
+
+                                    [[#{login.titulo}]]
+
+                                </a>
+
+                            </div>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
