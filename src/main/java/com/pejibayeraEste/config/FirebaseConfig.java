@@ -6,19 +6,33 @@ import com.google.cloud.storage.StorageOptions;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import java.io.IOException;
+import java.io.InputStream;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 
 @Configuration
+@Profile("!test")
 public class FirebaseConfig {
 
     @Value("${firebase.storage.bucket}")
     private String bucketName;
 
+    @Value("${firebase.json.path}")
+    private String jsonPath;
+
+    @Value("${firebase.json.file}")
+    private String jsonFile;
+
     @Bean
     public GoogleCredentials googleCredentials() throws IOException {
-        return GoogleCredentials.getApplicationDefault();
+        ClassPathResource resource
+                = new ClassPathResource(jsonPath + "/" + jsonFile);
+        try (InputStream is = resource.getInputStream()) {
+            return GoogleCredentials.fromStream(is);
+        }
     }
 
     @Bean

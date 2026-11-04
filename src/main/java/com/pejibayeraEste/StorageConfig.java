@@ -1,6 +1,4 @@
-package com.pejibayeraEste;
-
-//package com.pejibaye;
+//package com.pejibayeraEste;
 //
 //import com.google.auth.oauth2.GoogleCredentials;
 //import com.google.cloud.storage.Storage;
@@ -24,6 +22,8 @@ package com.pejibayeraEste;
 //
 //    @Bean
 //    public Storage storage() throws IOException {
+//        System.out.println("PATH=[" + jsonPath + "] FILE=[" + jsonFile + "]");
+//
 //        ClassPathResource resource = new ClassPathResource(jsonPath + File.separator + jsonFile);
 //        try (InputStream inputStream = resource.getInputStream()) {
 //            GoogleCredentials credentials = GoogleCredentials.fromStream(inputStream);

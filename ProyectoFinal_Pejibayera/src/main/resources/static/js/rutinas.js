@@ -1,1 +1,0 @@
-//En este archivo vendría el código javascript general para todas las vistas
